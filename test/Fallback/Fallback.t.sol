@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
+import "forge-std/console.sol";
 import {Fallback} from "../fallback/Fallback.sol";
 
 contract FallbackTest is Test {
@@ -24,8 +25,8 @@ contract FallbackTest is Test {
 
     function test_Attack() public {
         console.log("-----------------------------------");
-        console.log(address(CONTRACT));
-        console.log(address(ATTACKER));
+        console.logAddress(address(CONTRACT));
+        console.logAddress(address(ATTACKER));
         assertEq(fallbackContract.owner(), CONTRACT);
         // vm.expectRevert("caller is not the owner");
         // vm.prank(ATTACKER);
