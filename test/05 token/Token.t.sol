@@ -8,7 +8,9 @@ contract TokenTest is Test {
     address constant CONTRACT = address(42_000);
     address constant ATTACKER = address(42_001);
     Token tokenContract;
-    TokenHack tokenHackContract;
+
+    uint256 totalSupply = 10000000000;
+    uint256 attackerSupply = 20;
 
     function setUp() public {
         // Set general test settings
@@ -18,9 +20,8 @@ contract TokenTest is Test {
         vm.deal(ATTACKER, 1000000000000000000);
 
         vm.prank(CONTRACT);
-        tokenContract = new Token();
-        vm.prank(ATTACKER);
-        tokenHackContract = new TokenHack(address(tokenContract));
+        tokenContract = new Token(totalSupply);
+        tokenContract.transfer(address(ATTACKER), attackerSupply);
 
         vm.roll(block.number + 1);
         vm.warp(block.timestamp + 100);
