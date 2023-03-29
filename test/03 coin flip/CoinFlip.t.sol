@@ -50,7 +50,7 @@ contract CoinFlipTest is Test {
 }
 
 contract CoinFlipHack {
-    CoinFlip immutable victim;
+    CoinFlip public victim;
 
     constructor(address coinflipAddress) {
         victim = CoinFlip(coinflipAddress);
