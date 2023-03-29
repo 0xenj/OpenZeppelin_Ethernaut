@@ -3,27 +3,32 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import {Fallback} from "../fallback/Fallback.sol";
-import {MockERC20} from "../mock/MockERC20.sol";
 
 contract FallbackTest is Test {
-    Fallback public test;
-
-    MockERC20 public token;
+    address constant CONTRACT = address(42_000);
+    address constant ATTACKER = address(42_001);
+    Fallback fallbackContract;
 
     function setUp() public {
         // Set general test settings
         vm.roll(1);
         vm.warp(100);
-        vm.startPrank(ADMIN);
 
-        test = new Fallback();
-
-        token = new MockERC20();
+        vm.prank(CONTRACT);
+        fallbackContract = new Fallback();
 
         vm.stopPrank();
         vm.roll(block.number + 1);
         vm.warp(block.timestamp + 100);
+    }
 
-        return test;
+    function test_Attack() public {
+        console.log("-----------------------------------");
+        console.log(address(CONTRACT));
+        console.log(address(ATTACKER));
+        assertEq(fallbackContract.owner(), CONTRACT);
+        // vm.expectRevert("caller is not the owner");
+        // vm.prank(ATTACKER);
+        // test.withdraw();
     }
 }
